@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class InterfazGrafica extends JFrame {
-    private JButton btnAgregarRegular, btnAgregarVIP, btnMostrar, btnEliminar, btnSalir;
+    private JButton btnAgregarRegular, btnAgregarVIP, btnMostrar, btnEliminar, btnEditar, btnSalir;
     private JTextArea textArea;
     private Agenda agenda;
 
@@ -34,12 +34,16 @@ public class InterfazGrafica extends JFrame {
         btnEliminar.setBounds(20, 220, 200, 30);
         add(btnEliminar);
 
+        btnEditar = new JButton("Editar Contacto");
+        btnEditar.setBounds(20, 260, 200, 30);
+        add(btnEditar);
+
         textArea = new JTextArea();
         textArea.setBounds(250, 40, 750, 500);
         add(textArea);
 
         btnSalir = new JButton("Salir");
-        btnSalir.setBounds(20, 260, 200, 30);
+        btnSalir.setBounds(20, 300, 200, 30);
         add(btnSalir);
 
         btnAgregarRegular.addActionListener(new ActionListener() {
@@ -77,10 +81,11 @@ public class InterfazGrafica extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 btnMostrar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        textArea.setText(""); // Limpiar el área de texto antes de mostrar los contactos
+                        textArea.setText("");
 
                         ArrayList<Contacto> listaContactos = agenda.getContactos();
                         for (Contacto c : listaContactos) {
+                            textArea.append("\n");
                             textArea.append("Nombre: " + c.getNombre() + ", Teléfono: " + c.getTelefono());
 
                             if (c instanceof ContactoVIP) {
@@ -106,6 +111,28 @@ public class InterfazGrafica extends JFrame {
                         agenda.eliminarContacto(c);
                         contactoEncontrado = true;
                         JOptionPane.showMessageDialog(null, "Contacto eliminado correctamente.");
+                        break;
+                    }
+                }
+
+                if (!contactoEncontrado) {
+                    JOptionPane.showMessageDialog(null, "Contacto no encontrado.");
+                }
+            }
+        });
+
+        btnEditar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nombreEditar = JOptionPane.showInputDialog("Ingrese nombre del contacto a editar:");
+
+                ArrayList<Contacto> contactos = agenda.getContactos();
+                boolean contactoEncontrado = false;
+                for (Contacto c : contactos) {
+                    if (c.getNombre().equalsIgnoreCase(nombreEditar)) {
+                        String nuevoTelefono = JOptionPane.showInputDialog("Ingrese nuevo número de teléfono:");
+                        c.setTelefono(nuevoTelefono);
+                        contactoEncontrado = true;
+                        JOptionPane.showMessageDialog(null, "Contacto editado correctamente.");
                         break;
                     }
                 }

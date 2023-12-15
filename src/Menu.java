@@ -86,7 +86,7 @@ public class Menu {
                 }
                 System.out.println("Contacto no encontrado.");
                 break;
-            case 63:
+            case 6:
                 System.out.println("¡Agenda Cerrada!");
                 System.exit(0);
                 break;
